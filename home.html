@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calendar Embed Test</title>
+    <style>
+      :root {
+        --bg: #0b0f14;
+        --card: #121826;
+        --text: #e7eefc;
+        --muted: #9bb0d0;
+        --border: rgba(255, 255, 255, 0.08);
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
+          Arial, sans-serif;
+        background: radial-gradient(1200px 700px at 20% 0%, #172043, var(--bg));
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 16px 56px;
+      }
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .card {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      }
+      .bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .badge {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 6px 10px;
+        border-radius: 999px;
+      }
+      a {
+        color: var(--text);
+        opacity: 0.9;
+      }
+      iframe {
+        width: 100%;
+        height: 720px;
+        border: 0;
+        display: block;
+        background: white; /* Google iframe paints its own UI */
+      }
+      .note {
+        margin-top: 12px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      code {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Upcoming Events (Embed Test)</h1>
+        <p>
+          If this page loads on GitHub Pages and the calendar renders, you’re good.
+        </p>
+      </header>
+
+      <div class="card">
+        <div class="bar">
+          <div class="badge">Google Calendar · Agenda view</div>
+          <a
+            href="https://calendar.google.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Open Google Calendar</a
+          >
+        </div>
+
+        <!--
+          IMPORTANT:
+          1) Replace YOUR_CALENDAR_ID below with your calendar's "Calendar ID"
+             (Settings → Integrate calendar → Calendar ID)
+          2) If you want visitors to see event details, the calendar must be public.
+        -->
+        <iframe
+          title="Upcoming Events"
+          src="https://calendar.google.com/calendar/embed?mode=AGENDA&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&wkst=1&bgcolor=%230b0f14&ctz=America%2FLos_Angeles&src=hottiezworldwide@gmail.com"
+          scrolling="no"
+        ></iframe>
+      </div>
+
+      <div class="note">
+        If you see “You do not have permission to view this calendar”:
+        make the calendar public, or use a different embed approach.
+        Your calendar id usually looks like <code>something@group.calendar.google.com</code>.
+      </div>
+    </div>
+  </body>
+</html>

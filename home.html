@@ -1,129 +1,787 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Calendar Embed Test</title>
-    <style>
-      :root {
-        --bg: #0b0f14;
-        --card: #121826;
-        --text: #e7eefc;
-        --muted: #9bb0d0;
-        --border: rgba(255, 255, 255, 0.08);
-      }
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter,
-          Arial, sans-serif;
-        background: radial-gradient(1200px 700px at 20% 0%, #172043, var(--bg));
-        color: var(--text);
-      }
-      .wrap {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 32px 16px 56px;
-      }
-      header {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 18px;
-      }
-      h1 {
-        font-size: 28px;
-        margin: 0;
-        letter-spacing: -0.02em;
-      }
-      p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.5;
-      }
-      .card {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-      }
-      .bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 14px;
-        border-bottom: 1px solid var(--border);
-      }
-      .badge {
-        font-size: 12px;
-        color: var(--muted);
-        border: 1px solid var(--border);
-        padding: 6px 10px;
-        border-radius: 999px;
-      }
-      a {
-        color: var(--text);
-        opacity: 0.9;
-      }
-      iframe {
-        width: 100%;
-        height: 720px;
-        border: 0;
-        display: block;
-        background: white; /* Google iframe paints its own UI */
-      }
-      .note {
-        margin-top: 12px;
-        font-size: 13px;
-        color: var(--muted);
-      }
-      code {
-        background: rgba(255, 255, 255, 0.06);
-        padding: 2px 6px;
-        border-radius: 6px;
-      }
-    </style>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hottiez Worldwide</title>
+  <meta name="description" content="Hottiez Worldwide — a social group for girls. Hot pink on black, Y2K energy. Join the movement." />
 
-  <body>
-    <div class="wrap">
-      <header>
-        <h1>Upcoming Events (Embed Test)</h1>
-        <p>
-          If this page loads on GitHub Pages and the calendar renders, you’re good.
-        </p>
-      </header>
+  <style>
+    :root{
+      --bg:#05040a;
+      --bg2:#090615;
+      --pink:#ff2aa1;
+      --pink2:#ff5fc0;
+      --pink3:#ff8bd6;
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --border:rgba(255,42,161,.35);
+      --card:rgba(255,255,255,.04);
+      --card2:rgba(255,255,255,.02);
+      --shadow: 0 22px 70px rgba(0,0,0,.65);
+      --r:18px;
+    }
 
-      <div class="card">
-        <div class="bar">
-          <div class="badge">Google Calendar · Agenda view</div>
-          <a
-            href="https://calendar.google.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Open Google Calendar</a
-          >
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Inter,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 12% 8%, rgba(255,42,161,.22), transparent 60%),
+        radial-gradient(900px 650px at 85% 18%, rgba(255,95,192,.18), transparent 60%),
+        radial-gradient(800px 600px at 50% 95%, rgba(255,139,214,.14), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* subtle y2k grid */
+    .grid-overlay{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(to right, rgba(255,42,161,.09) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,42,161,.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at 50% 10%, rgba(0,0,0,.75), transparent 65%);
+      opacity:.35;
+    }
+
+    .wrap{
+      width:min(1100px, calc(100% - 32px));
+      margin:0 auto;
+      padding: 18px 0 70px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* NAV */
+    .nav{
+      position:sticky;
+      top:12px;
+      z-index:10;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 12px;
+      border:1px solid rgba(255,42,161,.35);
+      border-radius:999px;
+      background: rgba(5,4,10,.55);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 55px rgba(0,0,0,.5);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 200px;
+    }
+    .logo{
+      width:36px;
+      height:36px;
+      border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(135deg, rgba(255,42,161,1), rgba(255,95,192,1));
+      box-shadow: 0 0 0 1px rgba(255,42,161,.45), 0 12px 30px rgba(255,42,161,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: repeating-linear-gradient(90deg, rgba(0,0,0,.35) 0 6px, transparent 6px 12px);
+      transform: rotate(-18deg);
+      opacity:.35;
+    }
+    .brand-name{
+      line-height:1.05;
+    }
+    .brand-name b{
+      display:block;
+      letter-spacing:.08em;
+      font-size:12px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.88);
+    }
+    .brand-name span{
+      display:block;
+      font-size:11px;
+      color:var(--muted);
+      letter-spacing:.02em;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:700;
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      transition: 140ms ease;
+    }
+    .nav a:hover{
+      color:var(--text);
+      border-color: rgba(255,42,161,.35);
+      background: rgba(255,42,161,.08);
+    }
+
+    .cta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid rgba(255,42,161,.5);
+      background: linear-gradient(135deg, rgba(255,42,161,.18), rgba(255,95,192,.10));
+      color: var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition: 160ms ease;
+      box-shadow: 0 16px 40px rgba(0,0,0,.45);
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 20px 55px rgba(0,0,0,.6);
+      border-color: rgba(255,42,161,.8);
+    }
+    .btn.secondary{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.12);
+      color: var(--muted);
+    }
+    .btn.secondary:hover{
+      color: var(--text);
+      border-color: rgba(255,42,161,.6);
+      background: rgba(255,42,161,.08);
+    }
+
+    /* HERO */
+    .hero{
+      margin-top:18px;
+      border-radius: calc(var(--r) + 10px);
+      border: 1px solid rgba(255,42,161,.28);
+      background:
+        radial-gradient(1200px 520px at 30% -10%, rgba(255,42,161,.18), transparent 60%),
+        radial-gradient(900px 520px at 80% 10%, rgba(255,95,192,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero-inner{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      padding: 28px;
+      align-items:stretch;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,42,161,.35);
+      background: rgba(5,4,10,.4);
+      color: var(--muted);
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      width: fit-content;
+    }
+    .tag .dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background: var(--pink);
+      box-shadow: 0 0 0 6px rgba(255,42,161,.18);
+    }
+
+    h1{
+      margin:14px 0 8px;
+      font-size: clamp(34px, 4.2vw, 62px);
+      letter-spacing:-.03em;
+      line-height: .95;
+      text-transform:uppercase;
+    }
+    .stroke{
+      -webkit-text-stroke: 1px rgba(255,42,161,.38);
+      color: rgba(255,255,255,.98);
+      text-shadow: 0 0 18px rgba(255,42,161,.12);
+    }
+
+    .hero p{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 58ch;
+    }
+
+    .hero-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .mini{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.75);
+      font-weight:700;
+      font-size:12px;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .mini span{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      padding:8px 10px;
+      border-radius:999px;
+    }
+
+    /* right hero panel (y2k poster) */
+    .panel{
+      border-radius: 22px;
+      border: 1px solid rgba(255,42,161,.32);
+      background:
+        radial-gradient(420px 320px at 70% 10%, rgba(255,42,161,.18), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55));
+      padding: 16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,42,161,.18) 0 1px, transparent 1px 16px),
+        repeating-linear-gradient(0deg, rgba(255,42,161,.12) 0 1px, transparent 1px 16px);
+      transform: rotate(12deg);
+      opacity:.25;
+      pointer-events:none;
+    }
+    .panel-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      position:relative;
+      z-index:1;
+    }
+    .barcode{
+      width: 140px;
+      height: 18px;
+      border-radius:6px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,42,161,.9) 0 2px, transparent 2px 5px);
+      opacity:.85;
+      box-shadow: 0 0 0 1px rgba(255,42,161,.3);
+    }
+    .panel-top small{
+      color: rgba(255,255,255,.55);
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:11px;
+    }
+    .panel h3{
+      margin:14px 0 8px;
+      font-size: 18px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      position:relative;
+      z-index:1;
+    }
+    .panel ul{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.72);
+      line-height:1.65;
+      font-size:14px;
+      position:relative;
+      z-index:1;
+    }
+    .panel .panel-footer{
+      margin-top:14px;
+      position:relative;
+      z-index:1;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* SECTIONS */
+    section{
+      margin-top: 22px;
+      padding-top: 50px; /* anchor offset */
+    }
+
+    .section-card{
+      border-radius: var(--r);
+      border:1px solid rgba(255,42,161,.28);
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      box-shadow: 0 18px 55px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+
+    .section-head{
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.9);
+    }
+    .section-head .hint{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      max-width: 70ch;
+    }
+
+    .content{
+      padding: 18px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .tile{
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .tile:before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,42,161,.14), transparent 55%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .tile b{
+      display:block;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+      font-size:12px;
+      color: rgba(255,255,255,.86);
+      margin-bottom: 6px;
+      position:relative;
+      z-index:1;
+    }
+    .tile p{
+      margin:0;
+      color: var(--muted);
+      line-height:1.55;
+      font-size:14px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* Poster wall placeholders */
+    .poster{
+      padding:0;
+      border-radius: 16px;
+      overflow:hidden;
+      border: 1px solid rgba(255,42,161,.28);
+      background: rgba(0,0,0,.35);
+      position:relative;
+      min-height: 180px;
+    }
+    .poster img{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .poster .label{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,42,161,.45);
+      background: rgba(5,4,10,.55);
+      backdrop-filter: blur(10px);
+      font-weight:900;
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    /* Calendar iframe */
+    iframe.calendar{
+      width:100%;
+      height: min(78vh, 860px);
+      border:0;
+      display:block;
+      background: white;
+    }
+
+    /* Contact form (mailto) */
+    form{
+      display:grid;
+      gap:10px;
+    }
+    .field{
+      display:grid;
+      gap:6px;
+    }
+    label{
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.78);
+      font-weight:800;
+    }
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(255,42,161,.65);
+      box-shadow: 0 0 0 4px rgba(255,42,161,.16);
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+
+    .footer{
+      margin-top: 22px;
+      color: rgba(255,255,255,.45);
+      font-size: 13px;
+      text-align:center;
+      padding: 18px 0 6px;
+    }
+    .footer b{ color: rgba(255,255,255,.65); }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+    }
+    @media (max-width: 520px){
+      .nav{ gap:10px; }
+      .brand-name span{ display:none; }
+      .cta .btn.secondary{ display:none; }
+    }
+
+    /* Columns */
+    .col-6{ grid-column: span 6; }
+    .col-4{ grid-column: span 4; }
+    .col-8{ grid-column: span 8; }
+    .col-12{ grid-column: span 12; }
+
+    @media (max-width: 840px){
+      .col-6, .col-4, .col-8{ grid-column: span 12; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-overlay"></div>
+
+  <div class="wrap">
+
+    <!-- NAV -->
+    <nav class="nav" aria-label="Primary">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-name">
+          <b>HOTTIEZ WORLDWIDE</b>
+          <span>Hot girls. Good energy. Real community.</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#campaigns">Campaigns</a>
+        <a href="#calendar">Calendar</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn secondary" href="https://linktr.ee/HottiezWorldwide?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsq3TucfDWYsDB9HFoBieCZ-5aqTbyLEzeRgmVLcDtTm-3ZSrigAX7dSNrrE_aem_-NokF51imnoh1dw4y28xFw" target="_blank" rel="noopener noreferrer">
+          Linktree
+        </a>
+        <a class="btn" href="#contact">DM to Join</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="tag"><span class="dot"></span> join the movement</div>
+          <h1 class="stroke">HOTTIEZ<br/>WORLDWIDE</h1>
+          <p>
+            We’re a social group for girls built on <b>love, growth, and integrity</b>.
+            If you want a community that pours into women (for real), you’re in the right place.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#calendar">See the Calendar</a>
+            <a class="btn secondary" href="#campaigns">View Campaigns</a>
+          </div>
+
+          <div class="mini" aria-label="Highlights">
+            <span>IRL MEETUPS</span>
+            <span>COMMUNITY</span>
+            <span>GOOD ENERGY ONLY</span>
+            <span>HOT PINK ON BLACK</span>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panel-top">
+            <small>signal active</small>
+            <div class="barcode" aria-hidden="true"></div>
+          </div>
+          <h3>How it works</h3>
+          <ul>
+            <li>Check the calendar for upcoming events + meetups.</li>
+            <li>Tap Linktree for socials + quick links.</li>
+            <li>Want in? Hit “DM to Join” and we’ll send the group chat info.</li>
+          </ul>
+          <div class="panel-footer">
+            <a class="btn" href="#contact">DM to Join</a>
+            <a class="btn secondary" href="https://linktr.ee/HottiezWorldwide?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsq3TucfDWYsDB9HFoBieCZ-5aqTbyLEzeRgmVLcDtTm-3ZSrigAX7dSNrrE_aem_-NokF51imnoh1dw4y28xFw" target="_blank" rel="noopener noreferrer">Open Linktree</a>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-card">
+        <div class="section-head">
+          <h2>About us</h2>
+          <p class="hint">
+            A global sisterhood dedicated to growth, connection, and impact — no judgment, no comparison, no “mean-girl” energy.
+          </p>
+        </div>
+
+        <div class="content">
+          <div class="grid">
+            <div class="tile col-4">
+              <b>Love</b>
+              <p>We choose love over ego. The goal is uplift, not competition.</p>
+            </div>
+            <div class="tile col-4">
+              <b>Growth</b>
+              <p>We show up for each other — mindset, goals, confidence, and consistency.</p>
+            </div>
+            <div class="tile col-4">
+              <b>Integrity</b>
+              <p>We keep it real. We keep it kind. We keep it solid.</p>
+            </div>
+
+            <div class="tile col-12">
+              <b>What you can expect</b>
+              <p>
+                Meetups + events, community conversations, and campaigns that pour into women.
+                If you’re looking for a sisterhood that feels like a reset button, welcome.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAMPAIGNS -->
+    <section id="campaigns">
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Campaigns</h2>
+          <p class="hint">
+            Ongoing themes we run throughout the year — community challenges, glow-up goals, and “pull up” moments.
+          </p>
+        </div>
+
+        <div class="content">
+          <div class="grid">
+            <div class="tile col-6">
+              <b>Pour Into Women</b>
+              <p>Monthly community focus: show love, celebrate wins, and support growth with actions.</p>
+            </div>
+            <div class="tile col-6">
+              <b>Love Over Ego</b>
+              <p>Culture check: choose unity, build confidence, and keep the energy clean.</p>
+            </div>
+            <div class="tile col-6">
+              <b>Hottiez Meetups</b>
+              <p>IRL link-ups — coffee, events, and “let’s do something fun” plans.</p>
+            </div>
+            <div class="tile col-6">
+              <b>Community Spotlight</b>
+              <p>Highlight members, projects, and accomplishments. We don’t gatekeep success.</p>
+            </div>
+
+            <!-- OPTIONAL: Poster wall (replace images later) -->
+            <div class="poster col-4" aria-label="Poster 1">
+              <!-- Replace the src with your own file: assets/join.png -->
+              <!-- <img src="assets/join.png" alt="Hottiez poster" /> -->
+              <div class="label">poster slot 01</div>
+            </div>
+            <div class="poster col-4" aria-label="Poster 2">
+              <!-- <img src="assets/values.png" alt="Hottiez values poster" /> -->
+              <div class="label">poster slot 02</div>
+            </div>
+            <div class="poster col-4" aria-label="Poster 3">
+              <!-- <img src="assets/commitment.png" alt="Hottiez commitment poster" /> -->
+              <div class="label">poster slot 03</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section id="calendar">
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Calendar</h2>
+          <p class="hint">
+            Month view of upcoming events. (Replace <b>YOUR_CALENDAR_ID</b> in the iframe URL.)
+          </p>
         </div>
 
         <!--
-          IMPORTANT:
-          1) Replace YOUR_CALENDAR_ID below with your calendar's "Calendar ID"
-             (Settings → Integrate calendar → Calendar ID)
-          2) If you want visitors to see event details, the calendar must be public.
+          Replace YOUR_CALENDAR_ID with your actual Google Calendar ID:
+          Google Calendar → Settings → Integrate calendar → Calendar ID
+          NOTE: To show event details publicly, the calendar must be public.
         -->
         <iframe
-          title="Upcoming Events"
-          src="https://calendar.google.com/calendar/embed?mode=AGENDA&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&wkst=1&bgcolor=%230b0f14&ctz=America%2FLos_Angeles&src=hottiezworldwide@gmail.com"
-          scrolling="no"
-        ></iframe>
+          class="calendar"
+          title="Hottiez Worldwide Calendar"
+          src="https://calendar.google.com/calendar/embed?mode=MONTH&showTitle=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0&wkst=1&bgcolor=%2305040a&ctz=America%2FLos_Angeles&src=hottiezworldwide@gmail.com"
+          scrolling="no">
+        </iframe>
       </div>
+    </section>
 
-      <div class="note">
-        If you see “You do not have permission to view this calendar”:
-        make the calendar public, or use a different embed approach.
-        Your calendar id usually looks like <code>something@group.calendar.google.com</code>.
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Contact</h2>
+          <p class="hint">
+            Want in? Send a message and ask to join the group chat. (This form uses a simple mailto link.)
+          </p>
+        </div>
+
+        <div class="content">
+          <div class="grid">
+            <div class="tile col-6">
+              <b>DM to Join</b>
+              <p>
+                If you’re coming with good energy and you want community, we got you.
+                Hit Linktree or send a quick message here.
+              </p>
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a class="btn" href="https://linktr.ee/HottiezWorldwide?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsq3TucfDWYsDB9HFoBieCZ-5aqTbyLEzeRgmVLcDtTm-3ZSrigAX7dSNrrE_aem_-NokF51imnoh1dw4y28xFw" target="_blank" rel="noopener noreferrer">Linktree</a>
+                <a class="btn secondary" href="#calendar">Calendar</a>
+              </div>
+            </div>
+
+            <div class="tile col-6">
+              <b>Message us</b>
+              <form id="contactForm">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" placeholder="Your name" autocomplete="name" />
+                </div>
+                <div class="field">
+                  <label for="msg">Message</label>
+                  <textarea id="msg" name="msg" placeholder="Example: Hey! I want to join the group chat 💗"></textarea>
+                </div>
+                <button class="btn" type="submit">Send</button>
+                <p style="margin:0; color:rgba(255,255,255,.45); font-size:12px; line-height:1.4;">
+                  This opens your email app. If you want a real form submit later, we can wire it to Formspree or Netlify Forms.
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <div class="footer">
+      <b>Hottiez Worldwide</b> · Hot pink on black · Love / Growth / Integrity
     </div>
-  </body>
+
+  </div>
+
+  <script>
+    // Simple mailto submit (static-site friendly)
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = (document.getElementById("name").value || "").trim();
+      const msg = (document.getElementById("msg").value || "").trim();
+
+      const subject = encodeURIComponent("Hottiez Worldwide — Join Request");
+      const body = encodeURIComponent(
+        (name ? `Name: ${name}\n\n` : "") +
+        (msg ? msg : "Hey! I want to join the group chat 💗")
+      );
+
+      // TODO: replace with your real email if you want:
+      const to = "hottiezworldwide@gmail.com";
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
 </html>

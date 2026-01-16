@@ -576,28 +576,9 @@
             <a class="btn secondary" href="#campaigns">View Campaigns</a>
           </div>
 
-          <div class="mini" aria-label="Highlights">
-            <span>IRL MEETUPS</span>
-            <span>COMMUNITY</span>
-            <span>GOOD ENERGY ONLY</span>
-            <span>HOT PINK ON BLACK</span>
-          </div>
         </div>
 
-        <aside class="panel">
-          <div class="panel-top">
-            <small>signal active</small>
-            <div class="barcode" aria-hidden="true"></div>
-          </div>
-          <h3>How it works</h3>
-          <ul>
-            <li>Check the calendar for upcoming events + meetups.</li>
-            <li>Tap Linktree for socials + quick links.</li>
-          </ul>
-          <div class="panel-footer">
-            <a class="btn secondary" href="https://linktr.ee/HottiezWorldwide?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsq3TucfDWYsDB9HFoBieCZ-5aqTbyLEzeRgmVLcDtTm-3ZSrigAX7dSNrrE_aem_-NokF51imnoh1dw4y28xFw" target="_blank" rel="noopener noreferrer">Open Linktree</a>
-          </div>
-        </aside>
+    
       </div>
     </header>
 
@@ -678,9 +659,6 @@
       <div class="section-card">
         <div class="section-head">
           <h2>Calendar</h2>
-          <p class="hint">
-            Month view of upcoming events. (Replace <b>YOUR_CALENDAR_ID</b> in the iframe URL.)
-          </p>
         </div>
 
         <!--
@@ -703,7 +681,7 @@
         <div class="section-head">
           <h2>Contact</h2>
           <p class="hint">
-            Want in? Send a message and ask to join the group chat. (This form uses a simple mailto link.)
+            Want in? Send a message and ask to join the group chat.
           </p>
         </div>
 
@@ -728,28 +706,11 @@
     </section>
 
     <div class="footer">
-      <b>Hottiez Worldwide</b> · Hot pink on black · Love / Growth / Integrity
+      <b>Hottiez Worldwide</b> Love / Growth / Integrity
     </div>
 
   </div>
 
-  <script>
-    // Simple mailto submit (static-site friendly)
-    document.getElementById("contactForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = (document.getElementById("name").value || "").trim();
-      const msg = (document.getElementById("msg").value || "").trim();
 
-      const subject = encodeURIComponent("Hottiez Worldwide — Join Request");
-      const body = encodeURIComponent(
-        (name ? `Name: ${name}\n\n` : "") +
-        (msg ? msg : "Hey! I want to join the group chat 💗")
-      );
-
-      // TODO: replace with your real email if you want:
-      const to = "hottiezworldwide@gmail.com";
-      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-    });
-  </script>
 </body>
 </html>
